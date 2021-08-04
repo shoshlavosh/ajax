@@ -54,12 +54,30 @@ $("#weather-form").on('submit', showWeather);
 // // $.post()
 // #order-status
 // .addClass() 
+
+// return json objet -status code& text mess
 function orderMelons(evt) {
     evt.preventDefault();
 
+    const formInputs = {
+        'melon_type': $('#melon-type-field').val(),
+        'qty': $('#qty-field').val()
+    };
     // TODO: show the result message after your form
    
     // TODO: if the result code is ERROR, make it show up in red (see our CSS!)
+
+    //.order-error should be in red
+    $.post('/order-melons.json', formInputs, (res) => {
+        if (res['code'] === 'OK') {
+            $('#order-status').removeClass('order-error');
+        }
+        else {
+            $('#order-status').addClass('order-error'); 
+
+        }
+        $('#order-status').html(res['msg']);  
+    });
 }
 
 $("#order-form").on('submit', orderMelons);
